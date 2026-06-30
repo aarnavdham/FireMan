@@ -1,0 +1,1095 @@
+/* ============================================================
+   ELEMENTAL QUEST — Global Stylesheet
+   ============================================================ */
+
+/* ---------- Reset & root ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  width: 100%; height: 100%;
+  background: #05060a;
+  color: #e8eef7;
+  font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+:root {
+  --c-bg:        #05060a;
+  --c-panel:     rgba(16, 20, 32, 0.92);
+  --c-panel-2:   rgba(28, 34, 50, 0.85);
+  --c-border:    rgba(255, 255, 255, 0.08);
+  --c-text:      #e8eef7;
+  --c-text-dim:  #8a93a8;
+  --c-accent:    #ffd166;
+  --c-fire:      #ff5e3a;
+  --c-fire-2:    #ffb238;
+  --c-water:     #36c5ff;
+  --c-water-2:   #6ef0ff;
+  --c-earth:     #b9853d;
+  --c-earth-2:   #6cbf5e;
+  --c-ice:       #8ee6ff;
+  --c-ice-2:     #d8f6ff;
+  --c-wind:      #e6f0ff;
+  --c-wind-2:    #b6c8e6;
+  --c-danger:    #ff4d6d;
+  --c-success:   #62e69b;
+  --shadow-soft: 0 10px 40px rgba(0,0,0,0.55);
+  --shadow-glow: 0 0 30px rgba(255, 209, 102, 0.25);
+}
+
+kbd {
+  display: inline-block;
+  background: #1a2030;
+  border: 1px solid #2c3550;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font: 600 11px/1.4 'Consolas', monospace;
+  color: #ffd166;
+  margin: 0 2px;
+}
+
+/* ---------- Game root / canvas ---------- */
+#game-root {
+  position: relative;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at top, #0e1426 0%, #05060a 70%);
+}
+#game-canvas {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: optimizeQuality;
+  background: transparent;
+  display: block;
+}
+
+/* ---------- Screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.screen.active { display: flex; }
+
+/* ============================================================
+   BOOT SCREEN
+   ============================================================ */
+#screen-boot {
+  background: radial-gradient(circle at 50% 40%, #1a2138 0%, #05060a 80%);
+  flex-direction: column;
+}
+.boot-logo { text-align: center; }
+.logo-mark {
+  display: flex; justify-content: center; gap: 4px;
+  font: 900 28px/1 'Segoe UI';
+  margin-bottom: 16px;
+}
+.logo-mark .elem {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  background: #1a2030;
+  border: 1px solid rgba(255,255,255,0.1);
+  text-shadow: 0 0 8px currentColor;
+}
+.logo-mark .fire  { color: var(--c-fire);  border-color: var(--c-fire); }
+.logo-mark .water { color: var(--c-water); border-color: var(--c-water); }
+.logo-mark .earth { color: var(--c-earth); border-color: var(--c-earth); }
+.logo-mark .ice   { color: var(--c-ice);   border-color: var(--c-ice); }
+.logo-mark .wind  { color: var(--c-wind);  border-color: var(--c-wind); }
+
+.boot-title {
+  font: 900 56px/1 'Segoe UI';
+  letter-spacing: 8px;
+  background: linear-gradient(90deg, var(--c-fire), var(--c-water), var(--c-ice));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+}
+.boot-sub { color: var(--c-text-dim); font-size: 14px; margin-bottom: 30px; }
+.boot-loader {
+  width: 240px; height: 6px;
+  background: #1a2030;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 auto 12px;
+}
+.boot-loader-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--c-fire), var(--c-accent));
+  box-shadow: 0 0 12px var(--c-accent);
+  animation: loadFill 1.6s ease-out forwards;
+}
+@keyframes loadFill { to { width: 100%; } }
+.boot-status { font: 12px/1 monospace; color: var(--c-text-dim); }
+
+/* ============================================================
+   MAIN MENU
+   ============================================================ */
+#screen-menu {
+  background: radial-gradient(circle at 30% 30%, #1c1230 0%, #05060a 70%);
+}
+.bg-particles {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.menu-card {
+  position: relative;
+  text-align: center;
+  background: var(--c-panel);
+  backdrop-filter: blur(14px);
+  padding: 50px 60px;
+  border-radius: 20px;
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow-soft), var(--shadow-glow);
+  z-index: 2;
+  animation: cardFloat 6s ease-in-out infinite;
+}
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.game-title {
+  font: 900 64px/1.05 'Segoe UI';
+  letter-spacing: 4px;
+  color: var(--c-text);
+  margin-bottom: 8px;
+}
+.game-title .title-accent {
+  background: linear-gradient(90deg, var(--c-fire), var(--c-water));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.game-tagline {
+  color: var(--c-text-dim);
+  font-size: 14px;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+.menu-buttons {
+  display: flex; flex-direction: column;
+  gap: 10px;
+  width: 240px;
+  margin: 0 auto;
+}
+.menu-footer {
+  margin-top: 24px;
+  color: var(--c-text-dim);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font: 600 14px/1 'Segoe UI';
+  letter-spacing: 1px;
+  color: var(--c-text);
+  background: linear-gradient(180deg, #232a40, #1a2030);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-transform: uppercase;
+}
+.btn:hover {
+  background: linear-gradient(180deg, #2c3550, #232a40);
+  border-color: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+.btn:active { transform: translateY(0); }
+.btn-primary {
+  background: linear-gradient(180deg, #ffb238, #ff7a3a);
+  color: #1a0e00;
+  border-color: #ffd166;
+  box-shadow: 0 4px 18px rgba(255, 122, 58, 0.45);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, #ffd166, #ff9a48);
+  box-shadow: 0 6px 22px rgba(255, 209, 102, 0.55);
+}
+.btn-mini {
+  display: inline-block;
+  padding: 6px 12px;
+  font: 600 12px/1 'Segoe UI';
+  background: #1a2030;
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  color: var(--c-text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-mini:hover { background: #232a40; border-color: var(--c-accent); }
+
+/* ============================================================
+   LOBBY
+   ============================================================ */
+#screen-lobby {
+  background: radial-gradient(circle at 50% 20%, #122038 0%, #05060a 80%);
+}
+.lobby-container {
+  width: min(1100px, 92vw);
+  max-height: 92vh;
+  background: var(--c-panel);
+  border: 1px solid var(--c-border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Username bar — always visible at top of lobby */
+.username-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--c-panel-2);
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+}
+.username-bar label {
+  font: 700 12px/1 'Segoe UI';
+  letter-spacing: 1px;
+  color: var(--c-text-dim);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.username-bar input[type="text"] {
+  background: #0e1424;
+  border: 2px solid var(--c-border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: 700 16px/1 'Segoe UI';
+  color: var(--c-text);
+  width: 200px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+.username-bar input[type="text"]::placeholder { color: rgba(138, 147, 168, 0.5); }
+.username-bar input[type="text"]:focus {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.3);
+}
+.username-hint {
+  font: 11px/1 'Segoe UI';
+  color: var(--c-text-dim);
+  font-style: italic;
+}
+.lobby-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.lobby-header h2 { font: 700 24px/1 'Segoe UI'; letter-spacing: 2px; }
+
+/* Host / Join tabs */
+.lobby-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--c-border);
+}
+.lobby-tab {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--c-text-dim);
+  font: 600 13px/1 'Segoe UI';
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  margin-bottom: -2px;
+}
+.lobby-tab:hover { color: var(--c-text); }
+.lobby-tab.active {
+  color: var(--c-accent);
+  border-bottom-color: var(--c-accent);
+}
+
+/* Join form */
+.join-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.join-form input[type="text"] {
+  background: #0e1424;
+  border: 2px solid var(--c-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font: 700 18px/1 'Consolas', monospace;
+  letter-spacing: 6px;
+  color: var(--c-accent);
+  text-transform: uppercase;
+  width: 200px;
+  text-align: center;
+  outline: none;
+  transition: all 0.15s ease;
+}
+.join-form input[type="text"]::placeholder {
+  color: rgba(138, 147, 168, 0.4);
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+.join-form input[type="text"]:focus {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.3);
+}
+.join-status {
+  width: 100%;
+  font: 600 12px/1.4 'Segoe UI';
+  color: var(--c-text-dim);
+  margin-top: 4px;
+  min-height: 16px;
+}
+.join-status.success { color: var(--c-success); }
+.join-status.error { color: var(--c-danger); }
+
+.lobby-note {
+  font: 11px/1.4 'Segoe UI';
+  color: var(--c-text-dim);
+  margin-top: 8px;
+  font-style: italic;
+}
+.btn-hosting {
+  background: linear-gradient(180deg, #62e69b, #3aa86e) !important;
+  border-color: #62e69b !important;
+  color: #003314 !important;
+  cursor: default !important;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: wait !important;
+}
+.room-info {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  color: var(--c-text-dim);
+}
+.room-code {
+  font: 700 18px/1 'Consolas', monospace;
+  letter-spacing: 4px;
+  color: var(--c-accent);
+  background: #0e1424;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--c-border);
+}
+.lobby-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+.player-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-content: start;
+}
+.player-slot {
+  background: var(--c-panel-2);
+  border: 2px solid var(--c-border);
+  border-radius: 12px;
+  padding: 14px;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 110px;
+}
+.player-slot.empty {
+  border-style: dashed;
+  border-color: rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-text-dim);
+  font-size: 13px;
+  text-align: center;
+}
+.player-slot.filled {
+  border-color: var(--slot-color, var(--c-accent));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--slot-color, var(--c-accent)) 25%, transparent);
+}
+.player-slot.ready { background: rgba(98, 230, 155, 0.08); }
+.player-slot .ps-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--slot-color, var(--c-accent));
+  display: flex; align-items: center; justify-content: center;
+  font: 900 20px/1 'Segoe UI';
+  color: #05060a;
+  margin-bottom: 8px;
+  box-shadow: 0 0 12px var(--slot-color, var(--c-accent));
+}
+.player-slot .ps-name {
+  font: 600 13px/1.2 'Segoe UI';
+  margin-bottom: 4px;
+}
+.player-slot .ps-elem {
+  font: 600 10px/1 'Segoe UI';
+  color: var(--slot-color);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.player-slot .ps-status {
+  font: 11px/1 'Segoe UI';
+  color: var(--c-text-dim);
+  margin-top: 6px;
+}
+.player-slot .ps-status.ready { color: var(--c-success); }
+.player-slot .ps-controls {
+  font: 9px/1.2 monospace;
+  color: var(--c-text-dim);
+  margin-top: 4px;
+}
+
+.lobby-side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.lobby-section {
+  background: var(--c-panel-2);
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.lobby-section h3 {
+  font: 600 12px/1 'Segoe UI';
+  letter-spacing: 1.5px;
+  color: var(--c-text-dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.count-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.count-selector button {
+  padding: 10px;
+  background: #1a2030;
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  color: var(--c-text);
+  font: 700 16px/1 'Segoe UI';
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.count-selector button:hover { background: #232a40; }
+.count-selector button.active {
+  background: linear-gradient(180deg, #ffb238, #ff7a3a);
+  color: #1a0e00;
+  border-color: #ffd166;
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.4);
+}
+.elements-preview {
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.elements-preview .ep-chip {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font: 700 11px/1 'Segoe UI';
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: #1a2030;
+  border: 1px solid var(--c-border);
+  color: var(--c-text-dim);
+  transition: all 0.3s ease;
+}
+.elements-preview .ep-chip.active {
+  border-color: var(--chip-color);
+  color: var(--chip-color);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--chip-color) 30%, transparent);
+}
+.chat-box {
+  background: #0e1424;
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  padding: 8px;
+  height: 90px;
+  overflow-y: auto;
+  font: 12px/1.4 'Segoe UI';
+  margin-bottom: 8px;
+}
+.chat-box .chat-line {
+  margin-bottom: 4px;
+  word-wrap: break-word;
+}
+.chat-box .chat-line .chat-author {
+  font-weight: 700;
+  color: var(--c-accent);
+  margin-right: 4px;
+}
+.emote-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 6px;
+}
+.chat-input-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.chat-input-row input[type="text"] {
+  flex: 1;
+  background: #0e1424;
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font: 600 12px/1 'Segoe UI';
+  color: var(--c-text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.chat-input-row input[type="text"]::placeholder { color: rgba(138, 147, 168, 0.5); }
+.chat-input-row input[type="text"]:focus { border-color: var(--c-accent); }
+.emote {
+  background: #1a2030;
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.emote:hover { background: #232a40; transform: scale(1.1); }
+.lobby-footer {
+  display: flex; justify-content: space-between; gap: 12px;
+}
+
+/* ============================================================
+   LEVEL SELECT
+   ============================================================ */
+#screen-levelselect {
+  background: radial-gradient(circle at 50% 20%, #1a2c1c 0%, #05060a 80%);
+}
+.ls-container {
+  width: min(1100px, 92vw);
+  max-height: 92vh;
+  background: var(--c-panel);
+  border: 1px solid var(--c-border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-soft);
+}
+.ls-container h2 { font: 700 24px/1 'Segoe UI'; letter-spacing: 2px; text-align: center; }
+.ls-progress {
+  display: flex; align-items: center; gap: 12px;
+}
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #1a2030;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-fire), var(--c-accent));
+  width: 0%;
+  transition: width 0.4s ease;
+}
+#ls-progress-text { font: 600 12px/1 monospace; color: var(--c-text-dim); }
+
+.ls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+.ls-cell {
+  background: var(--c-panel-2);
+  border: 2px solid var(--c-border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ls-cell:hover:not(.locked) {
+  border-color: var(--c-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 209, 102, 0.25);
+}
+.ls-cell.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.ls-cell.completed { border-color: rgba(98, 230, 155, 0.5); }
+.ls-cell .ls-num {
+  font: 900 22px/1 'Segoe UI';
+  color: var(--c-accent);
+}
+.ls-cell .ls-name {
+  font: 600 12px/1.2 'Segoe UI';
+  color: var(--c-text);
+}
+.ls-cell .ls-elems {
+  display: flex; gap: 4px;
+  margin-top: 4px;
+}
+.ls-cell .ls-elem-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--dot, var(--c-text-dim));
+  box-shadow: 0 0 4px var(--dot, var(--c-text-dim));
+}
+.ls-cell .ls-stars {
+  position: absolute;
+  top: 8px; right: 8px;
+  font: 10px/1 'Segoe UI';
+  color: var(--c-accent);
+  letter-spacing: 2px;
+}
+.ls-cell.locked .ls-stars::before { content: '🔒'; }
+.ls-footer { display: flex; justify-content: center; }
+
+/* ============================================================
+   SETTINGS / HOW TO PLAY
+   ============================================================ */
+#screen-settings, #screen-howto {
+  background: radial-gradient(circle at 50% 20%, #1c1230 0%, #05060a 80%);
+}
+.settings-container, .howto-container {
+  width: min(700px, 92vw);
+  max-height: 92vh;
+  background: var(--c-panel);
+  border: 1px solid var(--c-border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-soft);
+  overflow-y: auto;
+}
+.settings-container h2, .howto-container h2 {
+  font: 700 24px/1 'Segoe UI';
+  letter-spacing: 2px;
+  text-align: center;
+}
+.settings-list { display: flex; flex-direction: column; gap: 10px; }
+.setting-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 50px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--c-panel-2);
+  border-radius: 8px;
+}
+.setting-row label { font: 600 13px/1 'Segoe UI'; }
+.setting-row input[type="range"] { width: 100%; }
+.setting-row select {
+  background: #1a2030;
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font: 600 12px/1 'Segoe UI';
+}
+.setting-row input[type="checkbox"] { width: 20px; height: 20px; }
+.setting-val {
+  font: 600 12px/1 monospace;
+  color: var(--c-accent);
+  text-align: right;
+}
+.settings-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.howto-body { display: flex; flex-direction: column; gap: 16px; }
+.howto-section {
+  background: var(--c-panel-2);
+  border: 1px solid var(--c-border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.howto-section h3 {
+  font: 700 14px/1.2 'Segoe UI';
+  letter-spacing: 1px;
+  color: var(--c-accent);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.howto-section p {
+  font: 13px/1.6 'Segoe UI';
+  color: var(--c-text);
+}
+.howto-section ul { list-style: none; padding: 0; }
+.howto-section ul li {
+  font: 13px/1.6 'Segoe UI';
+  padding: 4px 0;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font: 700 10px/1.6 'Segoe UI';
+  letter-spacing: 1px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.badge.fire  { background: var(--c-fire);  color: #1a0500; }
+.badge.water { background: var(--c-water); color: #001a2a; }
+.badge.earth { background: var(--c-earth); color: #1a1000; }
+.badge.ice   { background: var(--c-ice);   color: #001a2a; }
+.badge.wind  { background: var(--c-wind);  color: #1a2030; }
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.ctrl-block {
+  background: #0e1424;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  padding: 10px;
+}
+.ctrl-block h4 {
+  font: 700 12px/1.2 'Segoe UI';
+  color: var(--c-accent);
+  margin-bottom: 6px;
+}
+.ctrl-block p { font: 12px/1.4 'Segoe UI'; color: var(--c-text-dim); }
+.howto-footer { display: flex; justify-content: center; }
+
+/* ============================================================
+   IN-GAME HUD
+   ============================================================ */
+#screen-game { background: transparent; pointer-events: none; }
+#hud-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: linear-gradient(180deg, rgba(5,6,10,0.85), transparent);
+  pointer-events: auto;
+}
+.hud-left { display: flex; flex-direction: column; gap: 2px; }
+.hud-level {
+  font: 900 11px/1 'Segoe UI';
+  letter-spacing: 2px;
+  color: var(--c-accent);
+  text-transform: uppercase;
+}
+.hud-name {
+  font: 700 18px/1 'Segoe UI';
+  color: var(--c-text);
+}
+.hud-center { display: flex; align-items: center; gap: 16px; }
+.hud-timer {
+  font: 700 22px/1 'Consolas', monospace;
+  letter-spacing: 2px;
+  color: var(--c-text);
+  background: rgba(5,6,10,0.6);
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--c-border);
+}
+.hud-right {
+  display: flex; align-items: center; gap: 12px;
+}
+.hud-gems {
+  display: flex; align-items: center; gap: 4px;
+  font: 700 16px/1 'Segoe UI';
+  color: var(--c-accent);
+  background: rgba(5,6,10,0.6);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--c-border);
+}
+.gem-icon {
+  color: #6ef0ff;
+  text-shadow: 0 0 6px #6ef0ff;
+  font-size: 14px;
+}
+
+/* Player HUD (bottom) */
+#hud-players {
+  position: absolute;
+  bottom: 14px; left: 18px; right: 18px;
+  display: flex;
+  gap: 10px;
+  pointer-events: auto;
+}
+.hud-player {
+  flex: 1;
+  background: rgba(5,6,10,0.7);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--p-color, var(--c-accent));
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 240px;
+}
+.hud-player .hp-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--p-color, var(--c-accent));
+  display: flex; align-items: center; justify-content: center;
+  font: 900 14px/1 'Segoe UI';
+  color: #05060a;
+  box-shadow: 0 0 10px var(--p-color, var(--c-accent));
+  flex-shrink: 0;
+}
+.hud-player .hp-info { flex: 1; min-width: 0; }
+.hud-player .hp-name {
+  font: 700 11px/1 'Segoe UI';
+  color: var(--p-color, var(--c-accent));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.hud-player .hp-status {
+  font: 10px/1 'Segoe UI';
+  color: var(--c-text-dim);
+  margin-top: 2px;
+}
+.hud-player.dead { opacity: 0.5; filter: grayscale(0.6); }
+.hud-player.dead .hp-name { color: var(--c-danger); }
+
+/* Toast */
+#hud-toast {
+  position: absolute;
+  top: 70px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(5,6,10,0.9);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font: 600 14px/1.2 'Segoe UI';
+  color: var(--c-accent);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+}
+#hud-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Tutorial hint */
+#hud-hint {
+  position: absolute;
+  bottom: 80px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(5,6,10,0.7);
+  border: 1px solid var(--c-accent);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: 600 12px/1.4 'Segoe UI';
+  color: var(--c-text);
+  max-width: 460px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+#hud-hint.show { opacity: 1; }
+
+/* ---------- Overlays ---------- */
+.overlay-panel {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(5, 6, 10, 0.85);
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+  z-index: 20;
+}
+.overlay-panel.active { display: flex; }
+.overlay-panel h2 {
+  font: 900 42px/1 'Segoe UI';
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, var(--c-accent), #ffb238);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.overlay-panel p {
+  font: 14px/1.4 'Segoe UI';
+  color: var(--c-text-dim);
+  text-align: center;
+}
+.pause-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 260px;
+}
+.win-stats {
+  display: flex;
+  gap: 24px;
+  font: 600 14px/1 'Segoe UI';
+  color: var(--c-text);
+  margin: 4px 0;
+}
+.win-stats .stat-block {
+  text-align: center;
+}
+.win-stats .stat-val {
+  display: block;
+  font: 900 22px/1 'Consolas';
+  color: var(--c-accent);
+}
+.win-stats .stat-lbl {
+  display: block;
+  font: 10px/1 'Segoe UI';
+  letter-spacing: 1.5px;
+  color: var(--c-text-dim);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.win-stars {
+  font: 900 38px/1 'Segoe UI';
+  color: var(--c-accent);
+  letter-spacing: 6px;
+  text-shadow: 0 0 18px rgba(255, 209, 102, 0.6);
+}
+.win-stars .empty { color: rgba(255,255,255,0.15); text-shadow: none; }
+
+.restart-countdown {
+  font: 700 18px/1 'Segoe UI';
+  color: var(--c-accent);
+  letter-spacing: 1px;
+  text-align: center;
+  margin: 8px 0 4px;
+  animation: pulseGlow 1s ease-in-out infinite;
+}
+
+/* ============================================================
+   ANIMATIONS & UTILITIES
+   ============================================================ */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 12px var(--c-accent); }
+  50%      { box-shadow: 0 0 22px var(--c-accent); }
+}
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(-30px); opacity: 0; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.screen.active > * { animation: fadeIn 0.4s ease; }
+
+/* Floating ambient particles in menu */
+.bg-particles::before, .bg-particles::after {
+  content: '';
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.bg-particles::before {
+  background: var(--c-fire);
+  box-shadow:
+    20vw 30vh 0 var(--c-water),
+    60vw 70vh 0 var(--c-ice),
+    80vw 20vh 0 var(--c-earth),
+    30vw 80vh 0 var(--c-wind),
+    70vw 50vh 0 var(--c-fire);
+  animation: drift1 18s linear infinite;
+}
+.bg-particles::after {
+  background: var(--c-accent);
+  box-shadow:
+    10vw 60vh 0 var(--c-water),
+    90vw 40vh 0 var(--c-fire),
+    40vw 20vh 0 var(--c-ice),
+    55vw 85vh 0 var(--c-wind),
+    25vw 45vh 0 var(--c-earth);
+  animation: drift2 22s linear infinite;
+  opacity: 0.5;
+}
+@keyframes drift1 {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(40px, -30px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes drift2 {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-30px, 20px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Custom range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: #1a2030;
+  border-radius: 3px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px; height: 16px;
+  background: var(--c-accent);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--c-accent);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 16px; height: 16px;
+  background: var(--c-accent);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 8px var(--c-accent);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0e1424; }
+::-webkit-scrollbar-thumb { background: #2c3550; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3a4570; }
